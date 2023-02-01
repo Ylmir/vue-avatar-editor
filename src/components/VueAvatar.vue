@@ -10,6 +10,7 @@
       @drop="onDrop"
       @mousedown="onDragStart"
       @touchstart="onDragStart"
+      @touchmove="onDragStart"
       @click="clicked">
     </canvas>
     <input
@@ -224,8 +225,11 @@ export default {
         },
         onDragStart (e) {
             e = e || window.event;
-            if (e.type !== 'touchstart') {
-                e.preventDefault();
+            if (e.type === 'touchmove') {
+                if (this.imageLoaded) {
+                    e.preventDefault();
+                }
+                return;
             }
             this.state.drag = true;
             this.state.mx = null;
